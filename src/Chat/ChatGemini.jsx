@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
+import chat from '../assets/img/chat.webp'
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { API_KEY } from "../../conectar";
 import MessageSend from "../Components/MessageSend";
 import LoadingComponente from "../Components/Loading";
 import MessageRecive from "../Components/MessageRecive";
+import { marked, Marked } from "marked";
 
 export default function ChatBotStack() {
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [Conversation, setConversation] = useState([]);
-  const [PromptConjunt, setPromptConjunt] = useState([]);
   const messagesEndRef = useRef();
 
   const genAI = new GoogleGenerativeAI(API_KEY);
@@ -43,7 +44,22 @@ export default function ChatBotStack() {
   return (
     <div className="w-11/12 mx-auto px-10 border border-solid border-gray-300 h-full bg-white/5 rounded-2xl mt-5 overflow-hidden max-h-[600px]">
       <div className="w-11/12 mx-auto h-full overflow-hidden min-h-[600px] pt-6">
-        <div className="w-3/4 mx-auto h-[76%] p-4 max-h-[500px] overflow-y-scroll flex flex-col items-end">
+        <div className="w-3/4 mx-auto h-[76%] p-4 max-h-[500px] overflow-y-scroll flex flex-col items-start">
+          {Conversation.length === 0 && !loading ? (
+            <div className="w-full h-full flex flex-wrap justify-center items-start min-h-auto min-h-[300px]">
+              <div className="text-center">
+                <img src={chat} alt="chatStackBot" className="size-80 mx-auto" />
+                <h1 className="text-2xl my-1 text-center w-full ">
+                  Como posso Ajudar {"Name"} ?
+                </h1>
+                <p className="w-full text-center text-xs">
+                  Para um novo Prompt Adicione o Texto na caixa de texto {">"} e
+                  gere uma Resposta.
+                </p>
+                <p></p>
+              </div>
+            </div>
+          ) : false }
           {loading ? (
             <div className="w-full h-full flex flex-wrap min-h-auto min-h-[300px] gap-3 !my-2">
               <LoadingComponente></LoadingComponente>
@@ -58,7 +74,9 @@ export default function ChatBotStack() {
                 >
                   <div>
                     <MessageSend text={item.question}></MessageSend>
-                    <MessageRecive text={item.newAnswer}></MessageRecive>
+                    <MessageRecive
+                      children={marked(item.newAnswer)}
+                    ></MessageRecive>
                   </div>
                 </div>
               );

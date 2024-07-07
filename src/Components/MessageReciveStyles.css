@@ -1,0 +1,25 @@
+
+.message h1,h2,h3,h4{
+    display: block;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+ul{
+    margin: 12px 0;
+    padding-left: 18px;
+    list-style: circle;
+}
+
+.message *{
+    margin: 12px 0;
+}
+
+li{
+    margin: 5px 0;
+    font-weight: 700;
+}
+
+.message{
+    padding: 6px 12px;
+}
