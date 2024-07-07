@@ -1,18 +1,38 @@
+import { useRef, useState } from "react";
 import logo from "../assets/img/logo-21.png";
-import {} from './MessageReciveStyles.css';
+import {} from "./MessageReciveStyles.css";
+import { toast } from "react-toastify";
 
 export default function MessageRecive({ children }) {
+
+  const divElementContentToCopy = useRef()
+  const [copy, setCopy] = useState(false)
+
+  function handdleCopy(){
+
+    setCopy(true)
+    toast.done("Copiado Para a Area de Transferencia")
+    navigator.clipboard.writeText(divElementContentToCopy.current.textContent)
+    setTimeout(() => {
+      setCopy(false)
+    }, 2000);
+  }
+
   return (
     <div className="w-full h-auto flex items-start justify-start min-h-[300px] !mt-5 gap-2">
       <img src={logo} alt="" className="w-6" />
       <div className="w-full h-auto p-3 mb-3 bg-secondary rounded-xl flex items-start gap-4">
         <p className="w-auto grow text-left">
-          <div className="message" dangerouslySetInnerHTML={{ __html: children }} />
+          <div
+            ref={divElementContentToCopy}
+            className="message"
+            dangerouslySetInnerHTML={{ __html: children }}
+          />
         </p>
-        <button>
+        <button onClick={handdleCopy}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+            fill={`${copy ? 'gray' : 'none'}`}
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
@@ -21,7 +41,7 @@ export default function MessageRecive({ children }) {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+              d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
             />
           </svg>
         </button>

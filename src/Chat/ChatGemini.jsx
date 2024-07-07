@@ -99,7 +99,7 @@ export default function ChatBotStack() {
               onChange={(e) => setPrompt(e.target.value)}
               className="w-11/12 h-auto rounded-xl border-2 border-solid border-primary bg-secondary p-4 text-wrap overflow-scroll focus:outline-1"
               required
-              placeholder="escreva aqui a sua pesquisa ou erro..."
+              placeholder="escreva aqui a sua pesquisa"
             ></input>
             <button
               type={loading ? "button" : "submit"}
