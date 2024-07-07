@@ -1,0 +1,54 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  background-color: #efece7;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: Montserrat;
+  src: url('assets/Fonts/Montserrat-Medium.ttf');
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  width: 1200px;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+
+*{
+  font-family: Montserrat;
+  color: rgb(74, 74, 74);
+}
+
+.ShowMe{
+  animation: showMe 1.5s normal;
+  animation: showMe 1s ;
+}
+
+
+@keyframes showMe {
+  from{
+    opacity: 15%;
+    margin-top: 100px;
+  }
+  to{
+    opacity: 100%;
+    margin-top: inherit;
+  }
+}
