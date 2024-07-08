@@ -6,7 +6,7 @@ import MessageSend from "../Components/MessageSend";
 import LoadingComponente from "../Components/Loading";
 import MessageRecive from "../Components/MessageRecive";
 import { marked, Marked } from "marked";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection, getDocs } from "firebase/firestore";
 
 export default function ChatBotStack() {
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ export default function ChatBotStack() {
       ])
 
     async function saveInDataBase(){
-      await setDoc(doc(db, "conversation", "" + (conjuntConversation.length+1)), {
+      await addDoc(collection(db, "conversation"), {
         question: prompt,
         geminiAnswer: textResult,
       }).then(()=>{
@@ -51,21 +51,33 @@ export default function ChatBotStack() {
       })
     }
 
-    saveInDataBase()
-
     setPrompt("");
     setTimeout(() => {
       setLoading(false);
     }, 1200);
-
-    saveInDataBase
+    saveInDataBase()
   }
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [Conversation]);
 
+  
+  useEffect(() => {
+    const loadConversations = async () => {
+      const convRef = collection(db, "conversation")
+      await getDocs(convRef).then((snapshot) =>{
+        const data = snapshot.docs[0].data();
+        setConversation(() => [
+          {
+            question: data.question,
+            newAnswer: data.geminiAnswer,
+          },
+        ])
+      })
+    };
 
- 
+    loadConversations();
+  }, []);
 
   return (
     <div className="w-11/12 mx-auto px-10 border border-solid border-gray-300 h-full bg-white/5 rounded-2xl mt-5 overflow-hidden max-h-[600px]">
@@ -99,7 +111,7 @@ export default function ChatBotStack() {
                   ref={messagesEndRef}
                 >
                   <div>
-                    <MessageSend key={index} text={item.question}></MessageSend>
+                    <MessageSend key={index} text={item.question} editText={setPrompt}></MessageSend>
                     <MessageRecive key={item.id}
                       children={marked(item.newAnswer)}
                     ></MessageRecive>

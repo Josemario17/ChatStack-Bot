@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getApp } from "firebase/app";
+import 'firebase/firestore';
 import { getFirestore } from "firebase/firestore";
 
 const conectGemini = "AIzaSyAdeu0VtpMaTO7Q4TTEkig2nwsCaSP5o34";

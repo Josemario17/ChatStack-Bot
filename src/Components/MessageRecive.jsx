@@ -3,7 +3,6 @@ import logo from "../assets/img/logo-21.png";
 import {} from "./MessageReciveStyles.css";
 
 export default function MessageRecive({ children }) {
-
   const divElementContentToCopy = useRef()
   const [copy, setCopy] = useState(false)
 
@@ -16,7 +15,7 @@ export default function MessageRecive({ children }) {
   }
 
   return (
-    <div className="w-full h-auto flex items-start justify-start min-h-[300px] !mt-5 gap-2">
+    <div className="w-full h-auto flex items-start justify-start !mt-5 gap-2">
       <img src={logo} alt="" className="w-6" />
       <div className="w-full h-auto p-3 mb-3 bg-secondary rounded-xl flex items-start gap-4">
         <p className="w-auto grow text-left">
