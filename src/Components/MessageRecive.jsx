@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import logo from "../assets/img/logo-21.png";
 import {} from "./MessageReciveStyles.css";
-import { toast } from "react-toastify";
 
 export default function MessageRecive({ children }) {
 
@@ -9,9 +8,7 @@ export default function MessageRecive({ children }) {
   const [copy, setCopy] = useState(false)
 
   function handdleCopy(){
-
     setCopy(true)
-    toast.done("Copiado Para a Area de Transferencia")
     navigator.clipboard.writeText(divElementContentToCopy.current.textContent)
     setTimeout(() => {
       setCopy(false)

@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import chat from '../assets/img/chat.webp'
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { API_KEY } from "../../conectar";
+import { conectGemini, db } from "../../conectar";
 import MessageSend from "../Components/MessageSend";
 import LoadingComponente from "../Components/Loading";
 import MessageRecive from "../Components/MessageRecive";
 import { marked, Marked } from "marked";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function ChatBotStack() {
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [Conversation, setConversation] = useState([]);
+  const [conjuntConversation, setConjuntConversation] = useState([])
   const messagesEndRef = useRef();
+  
 
-  const genAI = new GoogleGenerativeAI(API_KEY);
+  const genAI = new GoogleGenerativeAI(conectGemini);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   async function handleTextPrompt(e) {
@@ -32,14 +35,37 @@ export default function ChatBotStack() {
       },
     ]);
 
+    setConjuntConversation((prevConversations)=>[
+        ...prevConversations,
+        Conversation,
+      ])
+
+    async function saveInDataBase(){
+      await setDoc(doc(db, "conversation", "" + (conjuntConversation.length+1)), {
+        question: prompt,
+        geminiAnswer: textResult,
+      }).then(()=>{
+        console.log("nova conversa!");
+      }).catch((error)=>{
+        console.log("Erro: " +error);
+      })
+    }
+
+    saveInDataBase()
+
     setPrompt("");
     setTimeout(() => {
       setLoading(false);
     }, 1200);
+
+    saveInDataBase
   }
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [Conversation]);
+
+
+ 
 
   return (
     <div className="w-11/12 mx-auto px-10 border border-solid border-gray-300 h-full bg-white/5 rounded-2xl mt-5 overflow-hidden max-h-[600px]">
@@ -73,8 +99,8 @@ export default function ChatBotStack() {
                   ref={messagesEndRef}
                 >
                   <div>
-                    <MessageSend text={item.question}></MessageSend>
-                    <MessageRecive
+                    <MessageSend key={index} text={item.question}></MessageSend>
+                    <MessageRecive key={item.id}
                       children={marked(item.newAnswer)}
                     ></MessageRecive>
                   </div>
@@ -99,7 +125,7 @@ export default function ChatBotStack() {
               onChange={(e) => setPrompt(e.target.value)}
               className="w-11/12 h-auto rounded-xl border-2 border-solid border-primary bg-secondary p-4 text-wrap overflow-scroll focus:outline-1"
               required
-              placeholder="escreva aqui a sua pesquisa"
+              placeholder="escreva aqui a sua pesquisa..."
             ></input>
             <button
               type={loading ? "button" : "submit"}
