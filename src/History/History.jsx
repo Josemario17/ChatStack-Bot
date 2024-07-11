@@ -23,7 +23,7 @@ export default function History() {
 
   useEffect(() => {
     const loadConversations = async () => {
-        setLoading(true)
+      setLoading(true)
       const convRef = collection(db, "conversation")
       const arrayList = []
       await getDocs(convRef).then((snapshot) =>{

@@ -61,9 +61,10 @@ export default function ChatBotStack() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [Conversation]);
 
-  
+
   useEffect(() => {
     const loadConversations = async () => {
+      setLoading(true)
       const convRef = collection(db, "conversation")
       await getDocs(convRef).then((snapshot) =>{
         const data = snapshot.docs[0].data();
@@ -75,6 +76,9 @@ export default function ChatBotStack() {
         ])
       })
     };
+    setTimeout(() => {
+        setLoading(false)
+    }, 2000);
 
     loadConversations();
   }, []);
