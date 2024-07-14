@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import chat from "../assets/img/chat.webp";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { conectGemini, db } from "../../conectar";
@@ -7,6 +7,7 @@ import LoadingComponente from "../Components/Loading";
 import MessageRecive from "../Components/MessageRecive";
 import { marked, Marked } from "marked";
 import { doc, setDoc, addDoc, collection, getDocs } from "firebase/firestore";
+import Navbar from "../Components/NavBar";
 
 export default function History() {
   const [loading, setLoading] = useState(false);
@@ -23,34 +24,39 @@ export default function History() {
 
   useEffect(() => {
     const loadConversations = async () => {
-      setLoading(true)
-      const convRef = collection(db, "conversation")
-      const arrayList = []
-      await getDocs(convRef).then((snapshot) =>{
-        
-        snapshot.forEach((doc)=>{
+      setLoading(true);
+      const convRef = collection(db, "conversation");
+      const arrayList = [];
+      await getDocs(convRef)
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
             arrayList.push({
-                question: doc.data().question,
-                newAnswer: doc.data().geminiAnswer
-            })
-        })
+              question: doc.data().question,
+              newAnswer: doc.data().geminiAnswer,
+            });
+          });
 
-        setConjuntConversation(arrayList)
-       console.log(arrayList);
-      }).catch((error)=>{
-        console.log("Erro: ", error);
-      })
+          setConjuntConversation(arrayList);
+          console.log(arrayList);
+        })
+        .catch((error) => {
+          console.log("Erro: ", error);
+        });
     };
     setTimeout(() => {
-        setLoading(false)
+      setLoading(false);
     }, 2000);
 
     loadConversations();
   }, []);
 
   return (
-    <div className={`w-11/12 mx-auto px-10 py-12 border border-solid border-gray-300 ${loading ? 'h-full' : 'h-auto'} bg-white/5 rounded-2xl mt-5`}>
-      <div className="w-3/4 mx-auto h-full overflow-scroll flex flex-col items-start">
+    <div className="p-10">
+    <Navbar></Navbar>
+      <div
+        className={`w-11/12 mx-auto px-10 py-12 border border-solid border-gray-300 ${loading ? "h-full" : "h-auto"} bg-white/5 rounded-2xl mt-5`}
+      >
+        <div className="w-3/4 mx-auto h-full overflow-scroll flex flex-col items-start">
           {conjuntConversation.length === 0 && !loading ? (
             <div className="w-full h-full flex flex-wrap justify-center items-start">
               <div className="text-center">
@@ -85,10 +91,7 @@ export default function History() {
                   ref={messagesEndRef}
                 >
                   <div>
-                    <MessageSend
-                      key={index}
-                      text={item.question}
-                    ></MessageSend>
+                    <MessageSend key={index} text={item.question}></MessageSend>
                     <MessageRecive
                       key={item.id}
                       children={marked(item.newAnswer)}
@@ -99,6 +102,7 @@ export default function History() {
             })
           )}
         </div>
+      </div>
     </div>
   );
 }

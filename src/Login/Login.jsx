@@ -1,18 +1,47 @@
-import { Link } from "react-router-dom";
-import vector from '../assets/img/vector.webp'
+import { Link, useNavigate } from "react-router-dom";
+import vector from "../assets/img/vector.webp";
+import { useState, useContext } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../conectar";
+import { toast } from "react-toastify";
+import { AuthContext } from "../Contexts/users";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [loading, setLoading] = useState("");
+  const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext)
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    await signInWithEmailAndPassword(auth, email, Password)
+      .then((value) => {
+        signIn(email)
+        toast.success("Login Feito!");
+        setTimeout(() => {
+          navigate("/Chat");
+          setLoading(false);
+        }, 1000);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log("Erro:", error);
+        if (error == "FirebaseError: Firebase: Error (auth/invalid-credential).") {
+          toast.error("Email/Senha Errados." );
+        }
+      });
+  }
+
   return (
     <div>
-      <section className="">
-        <div className="grid grid-cols-1 min-h-[700px] lg:grid-cols-2 rounded-lg">
+      <section className="h-screen">
+        <div className="grid grid-cols-1 h-full lg:grid-cols-2 rounded-lg">
           <div className="relative flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 sm:px-6 lg:px-8">
             <div className="absolute inset-0 bg-primary">
-            <img
-                class="object-cover w-full h-full"
-                src={vector}
-                alt=""
-              />
+              <img className="object-cover w-full h-full" src={vector} alt="" />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
 
@@ -32,9 +61,9 @@ export default function Login() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         ></path>
                       </svg>
                     </div>
@@ -52,9 +81,9 @@ export default function Login() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         ></path>
                       </svg>
                     </div>
@@ -72,9 +101,9 @@ export default function Login() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         ></path>
                       </svg>
                     </div>
@@ -92,9 +121,9 @@ export default function Login() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         ></path>
                       </svg>
                     </div>
@@ -124,11 +153,11 @@ export default function Login() {
                 </Link>
               </p>
 
-              <form action="#" method="POST" className="mt-8">
+              <form action="#" onSubmit={handleLogin} className="mt-8">
                 <div className="space-y-5">
                   <div>
                     <label
-                      for=""
+                      htmlFor=""
                       className="text-base font-medium text-gray-900"
                     >
                       {" "}
@@ -144,9 +173,9 @@ export default function Login() {
                           stroke="currentColor"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
                             d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                           />
                         </svg>
@@ -154,8 +183,9 @@ export default function Login() {
 
                       <input
                         type="email"
-                        name=""
-                        id=""
+                        value={email}
+                        required
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="jose@mario.santos"
                         className="block w-full py-4 pl-11 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
@@ -165,7 +195,7 @@ export default function Login() {
                   <div>
                     <div className="flex items-center justify-between">
                       <label
-                        for=""
+                        htmlFor=""
                         className="text-base font-medium text-gray-900"
                       >
                         {" "}
@@ -192,8 +222,9 @@ export default function Login() {
 
                       <input
                         type="password"
-                        name=""
-                        id=""
+                        value={Password}
+                        required
+                        onChange={(e) => setPassword(e.target.value)}
                         placeholder="********"
                         className="block w-full py-4 pl-11 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
@@ -203,9 +234,41 @@ export default function Login() {
                   <div>
                     <button
                       type="submit"
-                      className="inline-flex items-center justify-center w-full px-4 py-3 text-base font-semibold text-gray-800 transition-all duration-200 border border-transparent rounded-md bg-primary focus:outline-none hover:opacity-80 focus:opacity-80"
+                      disabled={loading ? true : false}
+                      className="inline-flex items-center justify-center w-full px-4 py-3 text-base font-semibold text-gray-200 transition-all duration-200 border border-transparent rounded-md bg-primary focus:outline-none hover:opacity-80 focus:opacity-80"
                     >
-                      Entrar
+                      {loading ? (
+                        <div role="status" aria-label="loading">
+                          <svg
+                            className="w-6 h-6 stroke-white animate-spin "
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_9023_61563)">
+                              <path
+                                d="M14.6437 2.05426C11.9803 1.2966 9.01686 1.64245 6.50315 3.25548C1.85499 6.23817 0.504864 12.4242 3.48756 17.0724C6.47025 21.7205 12.6563 23.0706 17.3044 20.088C20.4971 18.0393 22.1338 14.4793 21.8792 10.9444"
+                                stroke="stroke-current"
+                                strokeWidth="1.4"
+                                strokeLinecap="round"
+                                className="my-path"
+                              ></path>
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_9023_61563">
+                                <rect
+                                  width="24"
+                                  height="24"
+                                  fill="white"
+                                ></rect>
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        "Entrar"
+                      )}
                     </button>
                   </div>
                 </div>

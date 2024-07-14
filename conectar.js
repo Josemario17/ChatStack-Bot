@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getFirestore } from "firebase/firestore";
-
+import { getAuth } from 'firebase/auth'
+ 
 const conectGemini = "AIzaSyAdeu0VtpMaTO7Q4TTEkig2nwsCaSP5o34";
 
 const firebaseConfig = {
@@ -16,5 +17,6 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp)
 
-export { conectGemini, db };
+export { conectGemini, db, auth };
