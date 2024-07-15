@@ -4,14 +4,14 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Contexts/users";
 import DropDown from "./DropDown";
 
-export default function Navbar() {
+export default function Navbar({userGeral}) {
   let location = useLocation();
   let [pathUrl, setPathUrl] = useState("/");
   const { user } = useContext(AuthContext);
   const [DropDn, setDropDown] = useState(false);
-    let userName = user.split("@");
-   let  name = userName[0];
-
+  let userName = user.split("@");
+  let  name = userName[0];
+   userGeral(name) 
 
   useEffect(() => {
     setPathUrl(location.pathname);

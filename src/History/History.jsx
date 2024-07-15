@@ -10,6 +10,7 @@ import { doc, setDoc, addDoc, collection, getDocs } from "firebase/firestore";
 import Navbar from "../Components/NavBar";
 
 export default function History() {
+  const [name, setName] = useState("")
   const [loading, setLoading] = useState(false);
   const [Conversation, setConversation] = useState([]);
   const [conjuntConversation, setConjuntConversation] = useState([]);
@@ -52,7 +53,7 @@ export default function History() {
 
   return (
     <div className="p-10">
-    <Navbar></Navbar>
+    <Navbar userGeral={setName}></Navbar>
       <div
         className={`w-11/12 mx-auto px-10 py-12 border border-solid border-gray-300 ${loading ? "h-full" : "h-auto"} bg-white/5 rounded-2xl mt-5`}
       >
@@ -66,7 +67,7 @@ export default function History() {
                   className="size-80 mx-auto"
                 />
                 <h1 className="text-2xl my-1 text-center w-full ">
-                  Como posso Ajudar {"Name"} ?
+                  Como posso Ajudar {name}?
                 </h1>
                 <p className="w-full text-center text-xs">
                   Para um novo Prompt Adicione o Texto na caixa de texto {">"} e

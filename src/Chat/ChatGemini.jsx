@@ -10,6 +10,7 @@ import { doc, setDoc, addDoc, collection, getDocs } from "firebase/firestore";
 import Navbar from "../Components/NavBar";
 
 export default function ChatBotStack() {
+  const [name, setName] = useState("")
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [Conversation, setConversation] = useState([]);
@@ -86,7 +87,7 @@ export default function ChatBotStack() {
 
   return (
     <div className="p-10 h-screen">
-    <Navbar></Navbar>
+    <Navbar userGeral={setName}></Navbar>
       <div className="w-11/12 mx-auto px-10 border border-solid border-gray-300 h-full bg-white/5 rounded-2xl mt-5 overflow-hidden max-h-[600px]">
         <div className="w-11/12 mx-auto h-full overflow-hidden min-h-[600px] pt-6">
           <div className="w-3/4 mx-auto h-[76%] p-4 max-h-[500px] overflow-y-scroll flex flex-col items-start">
@@ -99,7 +100,7 @@ export default function ChatBotStack() {
                     className="size-80 mx-auto"
                   />
                   <h1 className="text-2xl my-1 text-center w-full ">
-                    Como posso Ajudar {"Name"} ?
+                    Como posso Ajudar {name} ?
                   </h1>
                   <p className="w-full text-center text-xs">
                     Para um novo Prompt Adicione o Texto na caixa de texto {">"}{" "}
