@@ -2,24 +2,29 @@ import { useContext, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { AuthContext } from './Contexts/users'
 import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../conectar';
 
 export default function Private({ children }){
-  const { signed, signIn } = useContext(AuthContext);
+  const { signIn, user } = useContext(AuthContext);
+  const Login = sessionStorage.getItem("login")
   useEffect(()=>{
     async function checkLogin(){
-      onAuthStateChanged(auth, (user)=>{
-        if(user){
-          signIn(user.email)
-        }
-
-        else{
-
-        }
-      })
+      if(Login === "true"){
+        onAuthStateChanged(auth, (user)=>{
+          if(user){
+            signIn(user.email)
+          }
+        })
+      }
+      else{
+        signIn(false)
+      }
     }
     checkLogin()
   }, [signIn])
-  if(!!signed){
+
+  
+  if(!user){
     return  <Navigate to="/"/>
   }
 

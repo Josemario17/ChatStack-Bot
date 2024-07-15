@@ -21,6 +21,7 @@ export default function Login() {
       .then((value) => {
         signIn(email)
         toast.success("Login Feito!");
+        sessionStorage.setItem('login', 'true')
         setTimeout(() => {
           navigate("/Chat");
           setLoading(false);
@@ -28,28 +29,14 @@ export default function Login() {
       })
       .catch((error) => {
         setLoading(false);
-        console.log("Erro:", error);
         if (error == "FirebaseError: Firebase: Error (auth/invalid-credential).") {
           toast.error("Email/Senha Errados." );
         }
+        else if(error == "FirebaseError: Firebase: Error (auth/network-request-failed)."){
+          toast.error("Falha na Rede")
+        }
       });
   }
-
-  useEffect(()=>{
-    async function checkLogin(){
-      onAuthStateChanged(auth, (user)=>{
-        if(user){
-          signIn(user.email)
-        }
-
-        else{
-
-        }
-      })
-    }
-    checkLogin()
-  }, [signIn])
-
   return (
     <div>
       <section className="h-screen">

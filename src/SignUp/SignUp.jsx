@@ -18,7 +18,6 @@ export default function SignUp() {
     e.preventDefault();
     await createUserWithEmailAndPassword(auth, email, Password)
       .then(() => {
-        console.log("Cadstro");
         toast.success("Cadastro feito com sucesso!");
         setTimeout(() => {
           navigate("/");
@@ -31,6 +30,9 @@ export default function SignUp() {
           toast.error("Senha Fraca");
         } else if (error === "auth/email-already-in-use") {
           toast.error("O email usado já tem uma conta");
+        }
+        else if(error == " FirebaseError: Firebase: Error (auth/network-request-failed)"){
+          toast.error("Falha na Rede")
         }
       });
   }
