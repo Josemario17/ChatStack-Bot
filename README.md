@@ -15,4 +15,10 @@ ChatStack Bot é um chatbot avançado que integra a API Gemini IA e utiliza os s
 - **Firebase Realtime Database**: Para armazenamento e gerenciamento de dados.
 - **React.js**: Biblioteca JavaScript para construção da interface de usuário.
 
+Area de Login
 - ![Login](src/assets/img/screen.png)
+
+
+Area de Chat
+- ![Login](src/assets/img/screen-1.png)
+
