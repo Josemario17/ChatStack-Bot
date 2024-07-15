@@ -7,6 +7,7 @@ function AuthProvider({ children }){
 
   function signIn(email){
     setUser(email)
+    sessionStorage.setItem("login", true)
   }
 
   return(

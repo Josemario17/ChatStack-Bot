@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import vector from "../assets/img/vector.webp";
-import { useState, useContext } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState, useContext, useEffect } from "react";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../conectar";
 import { toast } from "react-toastify";
 import { AuthContext } from "../Contexts/users";
@@ -11,7 +11,7 @@ export default function Login() {
   const [Password, setPassword] = useState("");
   const [loading, setLoading] = useState("");
   const navigate = useNavigate();
-  const { signIn } = useContext(AuthContext)
+  const { signIn,  } = useContext(AuthContext)
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -34,6 +34,21 @@ export default function Login() {
         }
       });
   }
+
+  useEffect(()=>{
+    async function checkLogin(){
+      onAuthStateChanged(auth, (user)=>{
+        if(user){
+          signIn(user.email)
+        }
+
+        else{
+
+        }
+      })
+    }
+    checkLogin()
+  }, [signIn])
 
   return (
     <div>

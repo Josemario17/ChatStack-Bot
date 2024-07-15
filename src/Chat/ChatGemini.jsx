@@ -85,7 +85,7 @@ export default function ChatBotStack() {
   }, []);
 
   return (
-    <div className="p-10">
+    <div className="p-10 h-screen">
     <Navbar></Navbar>
       <div className="w-11/12 mx-auto px-10 border border-solid border-gray-300 h-full bg-white/5 rounded-2xl mt-5 overflow-hidden max-h-[600px]">
         <div className="w-11/12 mx-auto h-full overflow-hidden min-h-[600px] pt-6">
