@@ -1,27 +1,41 @@
 import { Link, redirect, useNavigate } from "react-router-dom";
-import vector from "../assets/img/vector.webp";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "../../conectar";
 import { toast } from "react-toastify";
+import SideLeftUIForm from "../Components/SideLeftUIForm";
 
 export default function SignUp() {
-  const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [Password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+      name: '',
+      email: '',
+      password: '',
+  });
   const [loading, setLoading] = useState(false);
+
+  const handdleUpdateForm = ({target}) =>{
+    const {id, value} = target
+
+    setForm({
+      ...form, [id] : [value]
+    })
+    
+  }
 
   async function newUser(e) {
     setLoading(true);
     e.preventDefault();
-    await createUserWithEmailAndPassword(auth, email, Password)
+    const email = form.email[0];
+    const password = form.password[0]
+    
+    await createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         toast.success("Cadastro feito com sucesso!");
         setTimeout(() => {
-          navigate("/");
           setLoading(false);
+          navigate("/");
         }, 1000);
       })
       .catch((error) => {
@@ -41,104 +55,7 @@ export default function SignUp() {
     <div>
       <section className="h-screen">
         <div className="grid grid-cols-1 min-h-full lg:grid-cols-2">
-          <div className="relative flex items-end px-4 pb-10 pt-60 sm:pb-16 md:justify-center lg:pb-24 bg-gray-50 sm:px-6 lg:px-8">
-            <div className="absolute inset-0">
-              <img className="object-cover w-full h-full" src={vector} alt="" />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-
-            <div className="relative">
-              <div className="w-full max-w-xl xl:w-full xl:mx-auto xl:pr-24 xl:max-w-xl">
-                <h3 className="text-4xl font-bold text-white">
-                  Respostas Rápidas <br className="hidden xl:block" />
-                  para Promps Rápidos
-                </h3>
-                <ul className="grid grid-cols-1 mt-10 sm:grid-cols-2 gap-x-8 gap-y-4">
-                  <li className="flex items-center space-x-3">
-                    <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-primary rounded-full">
-                      <svg
-                        className="w-3.5 h-3.5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                    <span className="text-md font-medium text-white">
-                      {" "}
-                      Geradas do gemini{" "}
-                    </span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-primary rounded-full">
-                      <svg
-                        className="w-3.5 h-3.5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                    <span className="text-md font-medium text-white">
-                      {" "}
-                      Acessibilidade{" "}
-                    </span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-primary rounded-full">
-                      <svg
-                        className="w-3.5 h-3.5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                    <span className="text-md font-medium text-white">
-                      {" "}
-                      Histórico de conversas{" "}
-                    </span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <div className="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 bg-primary rounded-full">
-                      <svg
-                        className="w-3.5 h-3.5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </div>
-                    <span className="text-md font-medium text-white">
-                      {" "}
-                      Interface memorável{" "}
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
+        <SideLeftUIForm></SideLeftUIForm>
           <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
             <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
               <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
@@ -182,8 +99,9 @@ export default function SignUp() {
 
                       <input
                         type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        id="name"
+                        value={form.name}
+                        onChange={handdleUpdateForm}
                         placeholder="Jose Santos"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
@@ -215,8 +133,9 @@ export default function SignUp() {
 
                       <input
                         type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="email"
+                        value={form.email}
+                        onChange={handdleUpdateForm}
                         required
                         placeholder="jose@mario.santos"
                         className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
@@ -249,8 +168,9 @@ export default function SignUp() {
 
                       <input
                         type="password"
-                        value={Password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        id="password"
+                        value={form.password}
+                        onChange={handdleUpdateForm}
                         required
                         placeholder="********"
                         className="block w-full py-4 pl-11 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
